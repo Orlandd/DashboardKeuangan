@@ -42,6 +42,47 @@ class DashboardFragment : Fragment() {
 //        }
 
 
+        val listData =  ArrayList<Pemasukan>()
+        listData.clear()
+        binding.rcData.setHasFixedSize(true)
+        binding.rcData.layoutManager = LinearLayoutManager(requireContext())
+
+        listData.add(Pemasukan("2018", "Mahasiswa", "UKT", "190000"))
+        listData.add(Pemasukan("2017", "Mahasiswa", "UKT", "190000"))
+        listData.add(Pemasukan("2016", "Mahasiswa", "UKT", "180000"))
+        listData.add(Pemasukan("2015", "Mahasiswa", "UKT", "140000"))
+        listData.add(Pemasukan("2014", "Mahasiswa", "UKT", "150000"))
+
+        val dataAdapter = PemasukanAdapter(requireContext(), listData)
+
+        binding.rcData.adapter = dataAdapter
+
+
+
+        //      Chart
+        val mPieChart = binding.piechart
+        mPieChart.clearChart()
+
+        mPieChart.addPieSlice(PieModel("Mahasiswa", 100f, Color.parseColor("#FE6DA8")))
+//        mPieChart.addPieSlice(PieModel("Sleep", 25f, Color.parseColor("#56B7F1")))
+//        mPieChart.addPieSlice(PieModel("Work", 35f, Color.parseColor("#CDA67F")))
+//        mPieChart.addPieSlice(PieModel("Eating", 9f, Color.parseColor("#FED70E")))
+
+        mPieChart.startAnimation()
+
+        val mBarChart = binding.barchart
+        mBarChart.clearChart()
+
+
+        mBarChart.addBar(BarModel("2014",150000f, -0xedcbaa))
+        mBarChart.addBar(BarModel("2015",140000f, -0xcbcbaa))
+        mBarChart.addBar(BarModel("2016",180000f, -0xa9cbaa))
+        mBarChart.addBar(BarModel("2017",190000f, -0x78c0aa))
+        mBarChart.addBar(BarModel("2018",190000f, -0xa9480f))
+
+        mBarChart.startAnimation()
+
+
         binding.pemasukan.setOnClickListener {
             val listData =  ArrayList<Pemasukan>()
             listData.clear()

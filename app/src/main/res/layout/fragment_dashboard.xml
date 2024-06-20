@@ -247,7 +247,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_data"
             android:layout_width="match_parent"
-            android:layout_height="244dp"
+            android:layout_height="288dp"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="40dp" />
 
