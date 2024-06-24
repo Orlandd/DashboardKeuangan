@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboardkeuangan.databinding.RowDataBinding
 
 class PemasukanAdapter(private val context: Context, private val listData: ArrayList<Pemasukan>) : RecyclerView.Adapter<PemasukanAdapter.DataViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
 
 

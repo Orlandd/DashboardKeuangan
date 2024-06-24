@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chart"
+            android:layout_marginTop="10dp"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -69,6 +70,14 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/yearSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:spinnerMode="dropdown"
+        android:layout_below="@id/expenditureCard"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/balanceCard"
         android:layout_width="match_parent"
@@ -79,7 +88,8 @@
         android:background="@android:color/darker_gray"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="5dp"
-        android:layout_below="@id/expenditureCard">
+        android:layout_below="@id/yearSpinner">
+
 
 
         <!--        <com.dewakoding.androidchartjs.AndroidChartJSView-->
@@ -247,7 +257,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_data"
             android:layout_width="match_parent"
-            android:layout_height="288dp"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="40dp" />
 

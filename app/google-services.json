@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "396675552446",
+    "firebase_url": "https://myapp-d27a7-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "myapp-d27a7",
+    "storage_bucket": "myapp-d27a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396675552446:android:6f5a707f45b2f1c67efaef",
+        "android_client_info": {
+          "package_name": "com.example.dashboardkeuangan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1DdpmdbrU6vWGymp7n7xJyPSiucIg56c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
