@@ -47,8 +47,10 @@ class HomeFragment : Fragment() {
 
     private fun setupSampleData() {
         // Menambahkan contoh data untuk pengeluaran
+        pengeluaranList.clear()
         pengeluaranList.add(Pengeluaran("01/01/2024", "Pembelian Buku", "150,000"))
         // Menambahkan contoh data untuk pemasukan
+        pemasukanList.clear()
         pemasukanList.add(Pemasukan("01/01/2024", "Gaji", "5,000,000"))
         pemasukanList.add(Pemasukan("01/01/2024", "Gaji", "5,000,000"))
     }
