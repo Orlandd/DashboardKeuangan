@@ -1,4 +1,8 @@
 package com.example.dashboardkeuangan.ui.notifications
 
-class FinancialReport {
-}
+data class FinancialReport(
+    val tanggal: String,
+    val category: String,
+    val jenis: String,
+    val nominal: Int
+)
