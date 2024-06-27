@@ -24,9 +24,13 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             />
-
     </LinearLayout>
 
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/KerjasamaItemListAwal"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </RelativeLayout>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.kerjasama.KerjasamaFragment">
 
     <TextView
         android:id="@+id/header_text"
@@ -175,11 +175,11 @@
 
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homeItemList"
+                android:id="@+id/KerjasamaItemList"
                 android:layout_width="match_parent"
                 android:layout_height="590dp"
                 android:layout_marginTop="16dp"
-                tools:listitem="@layout/item_pemasukan"/>
+                tools:listitem="@layout/item_kerjasama"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
