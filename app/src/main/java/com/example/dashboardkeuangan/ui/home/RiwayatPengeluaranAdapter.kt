@@ -1,10 +1,10 @@
-package com.example.homelayoutprojectpabbaru.ui.home
+package com.example.dashboardkeuangan.ui.home
 
 // RiwayatPengeluaranAdapter.java
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homelayoutprojectpabbaru.databinding.ItempengeluaranBinding
+import com.example.dashboardkeuangan.databinding.ItempengeluaranBinding
 
 
 class RiwayatPengeluaranAdapter(pengeluaranList: List<Pengeluaran>) :

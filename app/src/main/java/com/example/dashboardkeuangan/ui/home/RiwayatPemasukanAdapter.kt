@@ -1,10 +1,10 @@
-package com.example.homelayoutprojectpabbaru.ui.home
+package com.example.dashboardkeuangan.ui.home
 
 // RiwayatPemasukanAdapter.java
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homelayoutprojectpabbaru.databinding.ItempemasukanBinding
+import com.example.dashboardkeuangan.databinding.ItempemasukanBinding
 
 
 class RiwayatPemasukanAdapter(pemasukanList: List<Pemasukan>) :
