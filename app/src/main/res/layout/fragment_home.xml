@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/header_card"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         app:cardBackgroundColor="#1D2C4D"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,12 +18,11 @@
         <TextView
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="16dp"
             android:text="@string/home"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
