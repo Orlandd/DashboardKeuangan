@@ -34,6 +34,7 @@ class DashboardFragment : Fragment() {
     private lateinit var rvData : RecyclerView
     private val listData =  ArrayList<Pemasukan>()
     var db = Firebase.firestore
+    private var selectedYear = ""
     private val yearTotalMap = mutableMapOf<String, Float>()
     private val sourceYearTotalMap = mutableMapOf<String, MutableMap<String, Float>>()
 
@@ -55,11 +56,6 @@ class DashboardFragment : Fragment() {
 
 
         db = Firebase.firestore
-
-        getDataPemasukan()
-
-
-
 
 
 //        val listData =  ArrayList<Pemasukan>()
@@ -103,6 +99,8 @@ class DashboardFragment : Fragment() {
 //        mBarChart.startAnimation()
 
         // Assuming you call this method to fetch data initially
+        getDataPemasukan()
+
         initCharts()
 
         // Fetch data and then setup spinner
@@ -217,21 +215,29 @@ class DashboardFragment : Fragment() {
                 val listData = ArrayList<Pemasukan>()
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-
                 for (document in documents) {
                     val timestamp = document.getTimestamp("tanggal")
                     val tanggal = timestamp?.toDate()?.let { dateFormat.format(it) } ?: ""
-                    val sumber = document.getString("sumber") ?: ""
-                    val jenis = document.getString("jenis") ?: ""
-                    val nominal = document.getString("nominal") ?: ""
+                    val calendar = Calendar.getInstance()
+                    calendar.time = timestamp?.toDate()
+                    val year = calendar.get(Calendar.YEAR).toString()
 
-                    listData.add(Pemasukan(tanggal, sumber, jenis, nominal))
+                    if (selectedYear == year) {
+                        val sumber = document.getString("sumber") ?: ""
+                        val jenis = document.getString("jenis") ?: ""
+                        val nominal = document.getString("nominal") ?: ""
+
+                        listData.add(Pemasukan(tanggal, sumber, jenis, nominal))
+                    }
                 }
 
-                // Set up RecyclerView
+                // Sort listData by date in descending order
+                listData.sortByDescending {
+                    dateFormat.parse(it.tahun)
+                }
+
                 binding.rcData.setHasFixedSize(true)
                 binding.rcData.layoutManager = LinearLayoutManager(requireContext())
-
                 val dataAdapter = PemasukanAdapter(requireContext(), listData)
                 binding.rcData.adapter = dataAdapter
             }
@@ -239,6 +245,7 @@ class DashboardFragment : Fragment() {
                 Log.e("error", "Gagal menampilkan data", exception)
             }
     }
+
 
     private fun getDataPengeluaran() {
         db.collection("keuangan")
@@ -249,20 +256,28 @@ class DashboardFragment : Fragment() {
                 val listData2 = ArrayList<Pengeluaran>()
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-
                 for (document in documents) {
                     val timestamp = document.getTimestamp("tanggal")
                     val tanggal = timestamp?.toDate()?.let { dateFormat.format(it) } ?: ""
-                    val jenis = document.getString("jenis") ?: ""
-                    val nominal = document.getString("nominal") ?: ""
+                    val calendar = Calendar.getInstance()
+                    calendar.time = timestamp?.toDate()
+                    val year = calendar.get(Calendar.YEAR).toString()
 
-                    listData2.add(Pengeluaran(tanggal, jenis, nominal))
+                    if (selectedYear == year) {
+                        val jenis = document.getString("jenis") ?: ""
+                        val nominal = document.getString("nominal") ?: ""
+
+                        listData2.add(Pengeluaran(tanggal, jenis, nominal))
+                    }
                 }
 
-                // Set up RecyclerView
+                // Sort listData2 by date in descending order
+                listData2.sortByDescending {
+                    dateFormat.parse(it.tahun)
+                }
+
                 binding.rcData.setHasFixedSize(true)
                 binding.rcData.layoutManager = LinearLayoutManager(requireContext())
-
                 val dataAdapter = PengeluaranAdapter(requireContext(), listData2)
                 binding.rcData.adapter = dataAdapter
             }
@@ -270,6 +285,7 @@ class DashboardFragment : Fragment() {
                 Log.e("error", "Gagal menampilkan data", exception)
             }
     }
+
 
 
     private fun initCharts() {
@@ -315,7 +331,7 @@ class DashboardFragment : Fragment() {
                 }
 
                 // Set up spinner with years
-                setupYearSpinner()
+                setupYearSpinnerPemasukan()
 
                 // Draw initial charts with all data
                 drawCharts(selectedYear)
@@ -354,7 +370,7 @@ class DashboardFragment : Fragment() {
                 }
 
                 // Set up spinner with years
-                setupYearSpinner()
+                setupYearSpinnerPengeluaran()
 
                 // Draw initial charts with all data
                 drawCharts(selectedYear)
@@ -364,7 +380,26 @@ class DashboardFragment : Fragment() {
             }
     }
 
-    private fun setupYearSpinner() {
+//    private fun setupYearSpinner() {
+//        val years = yearTotalMap.keys.toList()
+//        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, years)
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        binding.yearSpinner.adapter = adapter
+//
+//        binding.yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+//                selectedYear = parent.getItemAtPosition(position).toString()
+//                drawCharts(selectedYear)
+//
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>) {
+//                // Do nothing
+//            }
+//        }
+//    }
+
+    private fun setupYearSpinnerPemasukan() {
         val years = yearTotalMap.keys.toList()
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, years)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -372,8 +407,11 @@ class DashboardFragment : Fragment() {
 
         binding.yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                val selectedYear = parent.getItemAtPosition(position).toString()
+                selectedYear = parent.getItemAtPosition(position).toString()
                 drawCharts(selectedYear)
+
+                // Update data when year changes
+                getDataPemasukan()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -381,6 +419,28 @@ class DashboardFragment : Fragment() {
             }
         }
     }
+
+    private fun setupYearSpinnerPengeluaran() {
+        val years = yearTotalMap.keys.toList()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, years)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.yearSpinner.adapter = adapter
+
+        binding.yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                selectedYear = parent.getItemAtPosition(position).toString()
+                drawCharts(selectedYear)
+
+                // Update data when year changes
+                getDataPengeluaran()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
+    }
+
 
     private fun drawCharts(selectedYear: String?) {
         // Clear existing charts
@@ -419,9 +479,6 @@ class DashboardFragment : Fragment() {
         val rnd = Random()
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
     }
-
-
-
 
 
     override fun onDestroyView() {
