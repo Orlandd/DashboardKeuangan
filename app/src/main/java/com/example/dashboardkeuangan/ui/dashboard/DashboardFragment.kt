@@ -207,14 +207,15 @@ class DashboardFragment : Fragment() {
     }
 
     private fun getDataPemasukan() {
+        val listData = ArrayList<Pemasukan>()
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+        // Fetch data from 'keuangan/pemasukan/data'
         db.collection("keuangan")
             .document("pemasukan")
             .collection("data")
             .get()
             .addOnSuccessListener { documents ->
-                val listData = ArrayList<Pemasukan>()
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
                 for (document in documents) {
                     val timestamp = document.getTimestamp("tanggal")
                     val tanggal = timestamp?.toDate()?.let { dateFormat.format(it) } ?: ""
@@ -231,20 +232,47 @@ class DashboardFragment : Fragment() {
                     }
                 }
 
-                // Sort listData by date in descending order
-                listData.sortByDescending {
-                    dateFormat.parse(it.tahun)
-                }
+                // Fetch data from 'keuangan/kerjasama/data'
+                db.collection("keuangan")
+                    .document("kerjasama")
+                    .collection("data")
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            val timestamp = document.getTimestamp("tanggal")
+                            val tanggal = timestamp?.toDate()?.let { dateFormat.format(it) } ?: ""
+                            val calendar = Calendar.getInstance()
+                            calendar.time = timestamp?.toDate()
+                            val year = calendar.get(Calendar.YEAR).toString()
 
-                binding.rcData.setHasFixedSize(true)
-                binding.rcData.layoutManager = LinearLayoutManager(requireContext())
-                val dataAdapter = PemasukanAdapter(requireContext(), listData)
-                binding.rcData.adapter = dataAdapter
+                            if (selectedYear == year) {
+                                val sumber = document.getString("sumber") ?: ""
+                                val jenis = "Kerja Sama"
+                                val nominal = document.getString("nominal") ?: ""
+
+                                listData.add(Pemasukan(tanggal, sumber, jenis, nominal))
+                            }
+                        }
+
+                        // Sort listData by date in descending order
+                        listData.sortByDescending {
+                            dateFormat.parse(it.tahun)
+                        }
+
+                        binding.rcData.setHasFixedSize(true)
+                        binding.rcData.layoutManager = LinearLayoutManager(requireContext())
+                        val dataAdapter = PemasukanAdapter(requireContext(), listData)
+                        binding.rcData.adapter = dataAdapter
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("error", "Gagal menampilkan data", exception)
+                    }
             }
             .addOnFailureListener { exception ->
                 Log.e("error", "Gagal menampilkan data", exception)
             }
     }
+
 
 
     private fun getDataPengeluaran() {
@@ -308,12 +336,17 @@ class DashboardFragment : Fragment() {
             .document("pemasukan")
             .collection("data")
 
+        val collectionKerjasama = db.collection("keuangan")
+            .document("kerjasama")
+            .collection("data")
+
         yearTotalMap.clear()
         sourceYearTotalMap.clear()
 
         // Ambil data dari Firestore
         collectionRef.get()
             .addOnSuccessListener { documents ->
+
                 for (document in documents) {
                     val timestamp = document.getTimestamp("tanggal")
                     val tahun = timestamp?.toDate()?.let { getYearFromDate(it) } ?: ""
@@ -331,15 +364,44 @@ class DashboardFragment : Fragment() {
                 }
 
                 // Set up spinner with years
-                setupYearSpinnerPemasukan()
 
-                // Draw initial charts with all data
-                drawCharts(selectedYear)
+
+                // Sekarang ambil data dari collectionKerjasama setelah collectionRef selesai
+                collectionKerjasama.get()
+                    .addOnSuccessListener { kerjasamaDocuments ->
+                        for (document in kerjasamaDocuments) {
+                            val timestamp = document.getTimestamp("tanggal")
+                            val tahun = timestamp?.toDate()?.let { getYearFromDate(it) } ?: ""
+                            val sumber = document.getString("sumber") ?: ""
+                            val nominal = document.getString("nominal")?.toFloatOrNull() ?: 0f
+
+                            // Hitung total nominal per tahun
+                            val currentTotal = yearTotalMap.getOrDefault(tahun, 0f)
+                            yearTotalMap[tahun] = currentTotal + nominal
+
+                            // Hitung total nominal per sumber dan tahun
+                            val currentSourceYearMap = sourceYearTotalMap.getOrPut(sumber) { mutableMapOf() }
+                            val currentSourceYearTotal = currentSourceYearMap.getOrDefault(tahun, 0f)
+                            currentSourceYearMap[tahun] = currentSourceYearTotal + nominal
+                        }
+
+                        // Setelah kedua koleksi berhasil diambil, lanjutkan ke pengolahan data lainnya
+                        // atau operasi yang diperlukan.
+                        setupYearSpinnerPemasukan()
+
+                        // Draw initial charts with all data
+                        drawCharts(selectedYear)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("fetchData", "Gagal mengambil data kerjasama", exception)
+                    }
+
             }
             .addOnFailureListener { exception ->
-                Log.e("fetchData", "Gagal mengambil data", exception)
+                Log.e("fetchData", "Gagal mengambil data pemasukan", exception)
             }
     }
+
 
     private fun fetchDataPengeluaran(selectedYear: String?) {
         val db = Firebase.firestore
@@ -459,7 +521,7 @@ class DashboardFragment : Fragment() {
 
             sourceYearMap.forEach { (sumber, yearMap) ->
                 val total = yearMap[year] ?: 0f
-                val persentase = (total / totalSelectedYear) * 100
+                val persentase = (total / totalSelectedYear) * 100.toFloat()
                 binding.piechart.addPieSlice(PieModel("$sumber ($year)", persentase, getRandomColor()))
             }
         }
