@@ -122,6 +122,7 @@ class DashboardFragment : Fragment() {
 //            val dataAdapter = PemasukanAdapter(requireContext(), listData)
 //
 //            binding.rcData.adapter = dataAdapter
+            binding.sumber.setVisibility(View.VISIBLE);
 
             getDataPemasukan()
 
@@ -171,6 +172,8 @@ class DashboardFragment : Fragment() {
 //            val dataAdapter = PengeluaranAdapter(requireContext(), listData2)
 //
 //            binding.rcData.adapter = dataAdapter
+
+            binding.sumber.setVisibility(View.GONE)
 
             getDataPengeluaran()
 
@@ -276,14 +279,15 @@ class DashboardFragment : Fragment() {
 
 
     private fun getDataPengeluaran() {
+        val listData2 = ArrayList<Pengeluaran>()
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+        // Fetch data from "pengeluaran" collection
         db.collection("keuangan")
             .document("pengeluaran")
             .collection("data")
             .get()
             .addOnSuccessListener { documents ->
-                val listData2 = ArrayList<Pengeluaran>()
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
                 for (document in documents) {
                     val timestamp = document.getTimestamp("tanggal")
                     val tanggal = timestamp?.toDate()?.let { dateFormat.format(it) } ?: ""
@@ -299,20 +303,45 @@ class DashboardFragment : Fragment() {
                     }
                 }
 
-                // Sort listData2 by date in descending order
-                listData2.sortByDescending {
-                    dateFormat.parse(it.tahun)
-                }
+                // Fetch data from "penelitian" collection
+                db.collection("keuangan")
+                    .document("penelitian")
+                    .collection("data")
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            val timestamp = document.getTimestamp("tanggal")
+                            val tanggal = timestamp?.toDate()?.let { dateFormat.format(it) } ?: ""
+                            val calendar = Calendar.getInstance()
+                            calendar.time = timestamp?.toDate()
+                            val year = calendar.get(Calendar.YEAR).toString()
 
-                binding.rcData.setHasFixedSize(true)
-                binding.rcData.layoutManager = LinearLayoutManager(requireContext())
-                val dataAdapter = PengeluaranAdapter(requireContext(), listData2)
-                binding.rcData.adapter = dataAdapter
+                            if (selectedYear == year) {
+                                val jenis = document.getString("kegiatan") ?: ""
+                                val nominal = document.getString("nominal") ?: ""
+
+                                listData2.add(Pengeluaran(tanggal, jenis, nominal))
+                            }
+                        }
+
+                        // Sort listData2 by date in descending order
+                        listData2.sortByDescending { dateFormat.parse(it.tahun) }
+
+                        // Setup RecyclerView
+                        binding.rcData.setHasFixedSize(true)
+                        binding.rcData.layoutManager = LinearLayoutManager(requireContext())
+                        val dataAdapter = PengeluaranAdapter(requireContext(), listData2)
+                        binding.rcData.adapter = dataAdapter
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("error", "Gagal menampilkan data dari penelitian", exception)
+                    }
             }
             .addOnFailureListener { exception ->
-                Log.e("error", "Gagal menampilkan data", exception)
+                Log.e("error", "Gagal menampilkan data dari pengeluaran", exception)
             }
     }
+
 
 
 
@@ -409,6 +438,10 @@ class DashboardFragment : Fragment() {
             .document("pengeluaran")
             .collection("data")
 
+        val collectionPenelitian = db.collection("keuangan")
+            .document("penelitian")
+            .collection("data")
+
         yearTotalMap.clear()
         sourceYearTotalMap.clear()
 
@@ -431,11 +464,39 @@ class DashboardFragment : Fragment() {
                     currentSourceYearMap[tahun] = currentSourceYearTotal + nominal
                 }
 
-                // Set up spinner with years
-                setupYearSpinnerPengeluaran()
+                collectionPenelitian.get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            val timestamp = document.getTimestamp("tanggal")
+                            val tahun = timestamp?.toDate()?.let { getYearFromDate(it) } ?: ""
+                            val sumber = document.getString("kegiatan") ?: ""
+                            val nominal = document.getString("nominal")?.toFloatOrNull() ?: 0f
 
-                // Draw initial charts with all data
-                drawCharts(selectedYear)
+                            // Hitung total nominal per tahun
+                            val currentTotal = yearTotalMap.getOrDefault(tahun, 0f)
+                            yearTotalMap[tahun] = currentTotal + nominal
+
+                            // Hitung total nominal per sumber dan tahun
+                            val currentSourceYearMap = sourceYearTotalMap.getOrPut(sumber) { mutableMapOf() }
+                            val currentSourceYearTotal = currentSourceYearMap.getOrDefault(tahun, 0f)
+                            currentSourceYearMap[tahun] = currentSourceYearTotal + nominal
+                        }
+
+                        // Set up spinner with years
+                        setupYearSpinnerPengeluaran()
+
+                        // Draw initial charts with all data
+                        drawCharts(selectedYear)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("fetchData", "Gagal mengambil data", exception)
+                    }
+
+//                // Set up spinner with years
+//                setupYearSpinnerPengeluaran()
+//
+//                // Draw initial charts with all data
+//                drawCharts(selectedYear)
             }
             .addOnFailureListener { exception ->
                 Log.e("fetchData", "Gagal mengambil data", exception)
