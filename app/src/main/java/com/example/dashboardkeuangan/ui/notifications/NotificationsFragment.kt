@@ -11,12 +11,19 @@ import com.example.dashboardkeuangan.R
 
 class NotificationsFragment : Fragment() {
 
-    private lateinit var rvFinancialReport: RecyclerView
-    private lateinit var financialReportAdapter: FinancialReportAdapter
-    private val reportList = listOf(
+    private lateinit var rvPemasukan: RecyclerView
+    private lateinit var rvPengeluaran: RecyclerView
+    private lateinit var pemasukanAdapter: FinancialReportAdapter
+    private lateinit var pengeluaranAdapter: FinancialReportAdapter
+
+    private val pemasukanList = listOf(
         FinancialReport("01-01-2023", "Pemasukan", "Gaji", 10),
+        // Add more sample pemasukan data here
+    )
+
+    private val pengeluaranList = listOf(
         FinancialReport("02-01-2023", "Pengeluaran", "Makanan", 5),
-        // Add more sample data here
+        // Add more sample pengeluaran data here
     )
 
     override fun onCreateView(
@@ -26,10 +33,15 @@ class NotificationsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_financial_report, container, false)
 
-        rvFinancialReport = view.findViewById(R.id.rvFinancialReport)
-        rvFinancialReport.layoutManager = LinearLayoutManager(context)
-        financialReportAdapter = FinancialReportAdapter(reportList)
-        rvFinancialReport.adapter = financialReportAdapter
+        rvPemasukan = view.findViewById(R.id.rvPemasukan)
+        rvPemasukan.layoutManager = LinearLayoutManager(context)
+        pemasukanAdapter = FinancialReportAdapter(pemasukanList)
+        rvPemasukan.adapter = pemasukanAdapter
+
+        rvPengeluaran = view.findViewById(R.id.rvPengeluaran)
+        rvPengeluaran.layoutManager = LinearLayoutManager(context)
+        pengeluaranAdapter = FinancialReportAdapter(pengeluaranList)
+        rvPengeluaran.adapter = pengeluaranAdapter
 
         return view
     }
