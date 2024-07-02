@@ -1,19 +1,22 @@
 package com.example.dashboardkeuangan.ui.kerjasama
 
 import android.os.Bundle
-import android.widget.ImageView
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboardkeuangan.R
-
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class KerjasamaDetailed : AppCompatActivity() {
 
     private lateinit var datatrend: RecyclerView
     private val list = ArrayList<DataDetailed>()
-
+    private lateinit var db: FirebaseFirestore
+    private var selectedYear: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +25,9 @@ class KerjasamaDetailed : AppCompatActivity() {
         datatrend = findViewById(R.id.KerjasamaItemList)
         datatrend.setHasFixedSize(true)
 
-        list.addAll(getProductList())
-        showRecyclerList()
+        db = FirebaseFirestore.getInstance()
+
+        // Get the selected year from the intent
         val product = intent.getParcelableExtra<Data>("DATA")
         if (product != null) {
             val textTahun: TextView = findViewById(R.id.tvTahun)
@@ -31,26 +35,41 @@ class KerjasamaDetailed : AppCompatActivity() {
 
             textTahun.text = product.tahun
             textNominalPertahun.text = product.jumlahpertahun
+
+            selectedYear = product.tahun
         }
+
+        fetchProductListFromFirestore()
     }
 
-    private fun getProductList(): ArrayList<DataDetailed> {
-        val productSumber = resources.getStringArray(R.array.data_sumber)
-        val productKeterangan = resources.getStringArray(R.array.data_keterangan)
-        val productTanggal = resources.getStringArray(R.array.data_tanggal)
-        val productNominal = resources.getStringArray(R.array.data_nominal)
-        val listmasuk = ArrayList<DataDetailed>()
-        for (i in productTanggal.indices) {
-            val masuk = DataDetailed(productSumber[i], productKeterangan[i], productTanggal[i], productNominal[i])
-            listmasuk.add(masuk)
-        }
-        return listmasuk
+    private fun fetchProductListFromFirestore() {
+        db.collection("keuangan").document("kerjasama").collection("data")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val dataDetailed = document.toObject(DataDetailed::class.java)
+                    list.add(dataDetailed)
+                    Log.d("FirestoreData", "Fetched data: ${dataDetailed}")
+                }
+                showRecyclerList()
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirestoreError", "Error getting documents: ", exception)
+            }
     }
-
 
     private fun showRecyclerList() {
+        // Filter the list based on the selected year
+        val filteredList = list.filter { dataDetailed ->
+            dataDetailed.tanggal?.toDate()?.let { date ->
+                val sdf = SimpleDateFormat("yyyy", Locale.getDefault())
+                val year = sdf.format(date)
+                year == selectedYear
+            } ?: false
+        }
+
         datatrend.layoutManager = LinearLayoutManager(this)
-        val listProductAwalAdapter = ListAwalKerjasamaAdapter(list)
+        val listProductAwalAdapter = ListAwalKerjasamaAdapter(filteredList)
         datatrend.adapter = listProductAwalAdapter
     }
 }

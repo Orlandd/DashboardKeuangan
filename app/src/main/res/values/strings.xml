@@ -12,77 +12,77 @@
     <string name="tanggal">Tanggal</string>
 
 
-    <string-array name="data_tahun">
-        <item>2012</item>
-        <item>2013</item>
-        <item>2014</item>
-        <item>2012</item>
-        <item>2013</item>
-        <item>2014</item>
-        <item>2012</item>
-        <item>2013</item>
-        <item>2014</item>
-    </string-array>
+<!--    <string-array name="data_tahun">-->
+<!--        <item>2012</item>-->
+<!--        <item>2013</item>-->
+<!--        <item>2014</item>-->
+<!--        <item>2012</item>-->
+<!--        <item>2013</item>-->
+<!--        <item>2014</item>-->
+<!--        <item>2012</item>-->
+<!--        <item>2013</item>-->
+<!--        <item>2014</item>-->
+<!--    </string-array>-->
 
-    <string-array name="data_sumber">
-        <item>PT.Sejahtera</item>
-        <item>PT.Kotok</item>
-        <item>PT.Abadi</item>
-        <item>PT.Jawa</item>
-        <item>PT.Mulia</item>
-        <item>PT.Karya</item>
-        <item>PT.Raja</item>
-        <item>PT.Rusak</item>
-        <item>PT.Makan</item>
-    </string-array>
+<!--    <string-array name="data_sumber">-->
+<!--        <item>PT.Sejahtera</item>-->
+<!--        <item>PT.Kotok</item>-->
+<!--        <item>PT.Abadi</item>-->
+<!--        <item>PT.Jawa</item>-->
+<!--        <item>PT.Mulia</item>-->
+<!--        <item>PT.Karya</item>-->
+<!--        <item>PT.Raja</item>-->
+<!--        <item>PT.Rusak</item>-->
+<!--        <item>PT.Makan</item>-->
+<!--    </string-array>-->
 
-    <string-array name="data_keterangan">
-        <item>Pemasukan</item>
-        <item>Pemasukan</item>
-        <item>Pengeluaran</item>
-        <item>Pemasukan</item>
-        <item>Pengeluaran</item>
-        <item>Pemasukan</item>
-        <item>Pemasukan</item>
-        <item>Pengeluaran</item>
-        <item>Pemasukan</item>
-    </string-array>
+<!--    <string-array name="data_keterangan">-->
+<!--        <item>Pemasukan</item>-->
+<!--        <item>Pemasukan</item>-->
+<!--        <item>Pengeluaran</item>-->
+<!--        <item>Pemasukan</item>-->
+<!--        <item>Pengeluaran</item>-->
+<!--        <item>Pemasukan</item>-->
+<!--        <item>Pemasukan</item>-->
+<!--        <item>Pengeluaran</item>-->
+<!--        <item>Pemasukan</item>-->
+<!--    </string-array>-->
 
-    <string-array name="data_tanggal">
-        <item>12-04</item>
-        <item>30-09</item>
-        <item>14-12</item>
-        <item>18-02</item>
-        <item>19-05</item>
-        <item>16-07</item>
-        <item>16-04</item>
-        <item>03-05</item>
-        <item>04-09</item>
-    </string-array>
+<!--    <string-array name="data_tanggal">-->
+<!--        <item>12-04</item>-->
+<!--        <item>30-09</item>-->
+<!--        <item>14-12</item>-->
+<!--        <item>18-02</item>-->
+<!--        <item>19-05</item>-->
+<!--        <item>16-07</item>-->
+<!--        <item>16-04</item>-->
+<!--        <item>03-05</item>-->
+<!--        <item>04-09</item>-->
+<!--    </string-array>-->
 
-    <string-array name="data_nominal">
-        <item>10.000</item>
-        <item>20.000</item>
-        <item>40.000</item>
-        <item>10.000</item>
-        <item>20.000</item>
-        <item>40.000</item>
-        <item>10.000</item>
-        <item>20.000</item>
-        <item>100000000</item>
-    </string-array>
+<!--    <string-array name="data_nominal">-->
+<!--        <item>10.000</item>-->
+<!--        <item>20.000</item>-->
+<!--        <item>40.000</item>-->
+<!--        <item>10.000</item>-->
+<!--        <item>20.000</item>-->
+<!--        <item>40.000</item>-->
+<!--        <item>10.000</item>-->
+<!--        <item>20.000</item>-->
+<!--        <item>100000000</item>-->
+<!--    </string-array>-->
 
-    <string-array name="data_nominalpertahun">
-        <item>10.000</item>
-        <item>20.000</item>
-        <item>40.000</item>
-        <item>10.000</item>
-        <item>20.000</item>
-        <item>40.000</item>
-        <item>10.000</item>
-        <item>20.000</item>
-        <item>100000000</item>
-    </string-array>
+<!--    <string-array name="data_nominalpertahun">-->
+<!--        <item>10.000</item>-->
+<!--        <item>20.000</item>-->
+<!--        <item>40.000</item>-->
+<!--        <item>10.000</item>-->
+<!--        <item>20.000</item>-->
+<!--        <item>40.000</item>-->
+<!--        <item>10.000</item>-->
+<!--        <item>20.000</item>-->
+<!--        <item>100000000</item>-->
+<!--    </string-array>-->
 
     <string name="app_name">HomeLayoutProjectPab</string>
     <string name="home">Home</string>

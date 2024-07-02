@@ -33,7 +33,7 @@
                 android:text="@string/sumber"
                 android:textAlignment="center"
                 android:layout_gravity="center"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:textAlignment="center"
                 android:layout_gravity="center"
                 android:text="@string/keterangan"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:textAlignment="center"
                 android:layout_gravity="center"
                 android:text="@string/tanggal"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:textAlignment="center"
                 android:layout_gravity="center"
                 android:text="@string/nominal"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
         </GridLayout>
 
