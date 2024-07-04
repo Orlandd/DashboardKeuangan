@@ -10,149 +10,295 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Header Title Section -->
-        <LinearLayout
-            android:id="@+id/header_title"
+        <!-- Header and Balance Section -->
+        <FrameLayout
+            android:id="@+id/header_balance_section"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@color/color5">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:elevation="4dp"
+            android:background="@drawable/boorder2">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Laporan"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Header Section -->
+                <LinearLayout
+                    android:id="@+id/header_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/tvMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="Bulan"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="20dp"
+                        android:background="#000"
+                        android:layout_marginTop="-2dp"
+                        android:layout_marginStart="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textSize="18dp"
+                        android:text="Tahun"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Balance Section -->
+                <LinearLayout
+                    android:id="@+id/balance_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:text="Saldo"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:text="Pemasukan"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:text="Pengeluaran"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
+                <!-- Balance Values Section -->
+                <LinearLayout
+                    android:id="@+id/balance_values_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:id="@+id/tvSaldo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Rp.10,000,000"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/tvPemasukan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Rp.10,000,000"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/tvPengeluaran"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Rp.10,000,000"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- Income Section -->
+        <LinearLayout
+            android:id="@+id/income_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header_balance_section"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="4dp"
+            android:background="@drawable/boorder2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Income Header -->
+                <TextView
+                    android:id="@+id/income_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_marginStart="4dp"
+                    android:text="Pemasukan"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+
+                <!-- Tanggal, Kategori, Jenis, Nominal -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/boorder3"
+                    android:padding="5dp"
+                    android:layout_margin="8dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tanggal"
+                        android:layout_marginStart="8dp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Kategori"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Jenis"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nominal"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
+                <!-- RecyclerView for Income -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPemasukan"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/boorder3"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!-- Header Section -->
+        <!-- Expense Section -->
         <LinearLayout
-            android:id="@+id/header_section"
+            android:id="@+id/expense_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:layout_below="@id/header_title">
+            android:layout_below="@id/income_section"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="4dp"
+            android:background="@drawable/boorder2">
 
-            <TextView
-                android:id="@+id/tvMonth"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bulan"
-                android:textColor="@android:color/holo_red_dark"
-                android:textStyle="bold"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvYear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Tahun"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textStyle="bold"/>
+                <!-- Expense Header -->
+                <TextView
+                    android:id="@+id/expense_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_marginStart="4dp"
+                    android:textSize="18dp"
+                    android:text="Pengeluaran"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+
+                <!-- Tanggal, Kategori, Jenis, Nominal -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/boorder3"
+                    android:layout_margin="8dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tanggal"
+                        android:layout_marginStart="8dp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Kategori"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Jenis"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nominal"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
+                <!-- RecyclerView for Expense -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPengeluaran"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/boorder3"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <!-- Balance Section -->
-        <LinearLayout
-            android:id="@+id/balance_section"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:layout_below="@id/header_section"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Saldo"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Pemasukan"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Pengeluaran"/>
-        </LinearLayout>
-
-        <!-- Balance Values Section -->
-        <LinearLayout
-            android:id="@+id/balance_values_section"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:layout_below="@id/balance_section"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:id="@+id/tvSaldo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Rp.10,000,000"/>
-
-            <TextView
-                android:id="@+id/tvPemasukan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Rp.10,000,000"/>
-
-            <TextView
-                android:id="@+id/tvPengeluaran"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Rp.10,000,000"/>
-        </LinearLayout>
-
-        <!-- Income Section Header -->
-        <TextView
-            android:id="@+id/income_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Pemasukan"
-            android:textStyle="bold"
-            android:layout_below="@id/balance_values_section"
-            android:layout_marginTop="8dp"/>
-
-        <!-- Income RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPemasukan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/income_header"
-            android:layout_marginTop="8dp"/>
-
-        <!-- Expense Section Header -->
-        <TextView
-            android:id="@+id/expense_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rvPemasukan"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
-            android:text="Pengeluaran"
-            android:textStyle="bold" />
-
-        <!-- Expense RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPengeluaran"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/expense_header"
-            android:layout_marginTop="8dp" />
 
     </RelativeLayout>
 </ScrollView>
