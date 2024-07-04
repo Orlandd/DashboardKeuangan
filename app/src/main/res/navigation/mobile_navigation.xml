@@ -18,10 +18,10 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_financial_report"
         android:name="com.example.dashboardkeuangan.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_financial_report" />
     <fragment
         android:id="@+id/navigation_kerjasama"
         android:name="com.example.dashboardkeuangan.ui.kerjasama.KerjasamaFragment"

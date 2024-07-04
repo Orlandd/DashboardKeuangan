@@ -12,7 +12,7 @@
         android:title="Chart" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_financial_report"
         android:icon="@drawable/newspaper"
         android:title="Laporan" />
 
