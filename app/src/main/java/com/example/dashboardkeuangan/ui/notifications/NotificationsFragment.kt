@@ -138,7 +138,7 @@ class NotificationsFragment : Fragment() {
 
                     FinancialReport(
                         formattedDate,
-                        "", // Menyesuaikan dengan data yang ada di Firestore
+                        "",
                         document.getString("jenis") ?: "",
                         formattedNominal
                     )
@@ -194,7 +194,6 @@ class NotificationsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up references to avoid memory leaks
         rvPemasukan.adapter = null
         rvPengeluaran.adapter = null
     }
