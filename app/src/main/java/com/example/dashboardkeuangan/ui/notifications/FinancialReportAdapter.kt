@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboardkeuangan.R
 
-class FinancialReportAdapter(private val reportList: List<FinancialReport>) :
+class FinancialReportAdapter(private var reportList: List<FinancialReport>) :
     RecyclerView.Adapter<FinancialReportAdapter.FinancialReportViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FinancialReportViewHolder {
@@ -17,18 +17,27 @@ class FinancialReportAdapter(private val reportList: List<FinancialReport>) :
 
     override fun onBindViewHolder(holder: FinancialReportViewHolder, position: Int) {
         val report = reportList[position]
-        holder.tvTanggal.text = report.tanggal
-        holder.tvCategory.text = report.category
-        holder.tvJenis.text = report.jenis
-        holder.tvNominal.text = "${report.nominal} juta"
+        holder.bind(report)
     }
 
-    override fun getItemCount() = reportList.size
+    override fun getItemCount(): Int = reportList.size
+
+    fun setItems(items: List<FinancialReport>) {
+        reportList = items
+        notifyDataSetChanged()
+    }
 
     class FinancialReportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvTanggal: TextView = itemView.findViewById(R.id.tvTanggal)
-        val tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
-        val tvJenis: TextView = itemView.findViewById(R.id.tvJenis)
-        val tvNominal: TextView = itemView.findViewById(R.id.tvNominal)
+        private val tvTanggal: TextView = itemView.findViewById(R.id.tvTanggal)
+        private val tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
+        private val tvJenis: TextView = itemView.findViewById(R.id.tvJenis)
+        private val tvNominal: TextView = itemView.findViewById(R.id.tvNominal)
+
+        fun bind(item: FinancialReport) {
+            tvTanggal.text = item.tanggal
+            tvCategory.text = item.category
+            tvJenis.text = item.jenis
+            tvNominal.text = "${item.nominal}"
+        }
     }
 }

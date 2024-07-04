@@ -4,5 +4,5 @@ data class FinancialReport(
     val tanggal: String,
     val category: String,
     val jenis: String,
-    val nominal: Int
+    val nominal: String
 )
