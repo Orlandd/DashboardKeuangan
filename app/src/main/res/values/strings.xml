@@ -10,6 +10,8 @@
     <string name="jumlahpertahun">JumlahPerTahun</string>
     <string name="keterangan">Keterangan</string>
     <string name="tanggal">Tanggal</string>
+    <string name="jumlah_penelitian">Jumlah Penelitian</string>
+    <string name="total_dana">Total dana yang telah digunakan Rp </string>
 
 
 <!--    <string-array name="data_tahun">-->

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mypokeItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="12dp"
+    app:cardCornerRadius="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/boorder5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="6"
+            android:rowCount="1">
+            <TextView
+                android:id="@+id/mytextView"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="Kegiatan"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/mytextView1"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="Divisi"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="13sp"/>
+            <TextView
+                android:id="@+id/mytextView2"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/tanggal"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/mytextView3"
+                android:layout_width="59dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="3"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="Status"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/mytextView4"
+                android:layout_width="27dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="4"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="Rp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/mytextView5"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="5"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="Keterangan"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="13sp"/>
+        </GridLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

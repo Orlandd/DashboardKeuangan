@@ -1,60 +1,114 @@
 package com.example.dashboardkeuangan.ui.penelitian
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboardkeuangan.R
+import com.example.dashboardkeuangan.ui.penelitian.Data
+import com.example.dashboardkeuangan.ui.penelitian.PenelitianDetailed
+import com.example.dashboardkeuangan.ui.penelitian.ListPenelitian2Adapter
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PenelitianFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PenelitianFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var mydata: RecyclerView
+    private val list = ArrayList<Data>()
+    private lateinit var tahunVal: TextView
+    private lateinit var tvIsiPenelitian: TextView
+//    private lateinit var gambar: ImageView
+    private lateinit var db: FirebaseFirestore
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?)
+    : View {
         return inflater.inflate(R.layout.fragment_penelitian, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PenelitianFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PenelitianFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mydata = view.findViewById(R.id.PenelitianItemList1)
+        mydata.setHasFixedSize(true)
+
+        tvIsiPenelitian = view.findViewById(R.id.tvIsiPenelitian)
+        tahunVal = view.findViewById(R.id.tahunVal)
+//        gambar = view.findViewById(R.id.gambar)
+
+        db = FirebaseFirestore.getInstance()
+        getProductList()
+    }
+
+    private fun getProductList(){
+        db.collection("keuangan/penelitian/data")
+            .get()
+            .addOnSuccessListener { documents ->
+                list.clear()
+                val groupedData = mutableMapOf<String, Int>()
+                var totalAmount = 0
+                var totalEntries = 0
+
+                for (document in documents) {
+                    val data = document.toData()
+                    if (data != null) {
+                        val year = data.tahun
+                        val amount = data.jumlahpertahun.toInt()
+                        groupedData[year] = groupedData.getOrDefault(year, 0) + amount
+                        totalAmount += amount
+                        totalEntries++
+                    }
                 }
+
+                for ((year, totalAmountPerYear) in groupedData) {
+                    list.add(Data(year, totalAmountPerYear))
+                }
+
+                tahunVal.text = totalAmount.toString()
+                tvIsiPenelitian.text = totalEntries.toString()
+
+                showRecyclerList()
             }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Error getting documents: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+    private fun QueryDocumentSnapshot.toData(): Data? {
+        return try {
+            val timestamp = getTimestamp("tanggal")
+            val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+            val year = timestamp?.toDate()?.let { yearFormat.format(it) } ?: ""
+            val nominal = getString("nominal")?.toIntOrNull()?: 0
+            Data(year, nominal)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun showRecyclerList() {
+        mydata.layoutManager = LinearLayoutManager(context)
+        val listmyPemasukanAdapter = ListPenelitian2Adapter(list)
+        mydata.adapter = listmyPemasukanAdapter
+
+        listmyPemasukanAdapter.setOnItemClickCallback(object : ListPenelitian2Adapter.OnItemClickCallback {
+            override fun onItemClicked(data: Data) {
+                showSelectedData(data)
+            }
+        })
+    }
+
+    private fun showSelectedData(data: Data) {
+        val intent = Intent(context, PenelitianDetailed::class.java)
+        intent.putExtra("DATA", data)
+        Toast.makeText(context, data.tahun + " is selected", Toast.LENGTH_SHORT).show()
+        startActivity(intent)
     }
 }

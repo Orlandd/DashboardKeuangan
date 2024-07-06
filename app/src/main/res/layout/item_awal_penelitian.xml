@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.penelitian.PenelitianFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_Nominal_Tahun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_text">
+
+        <LinearLayout
+            android:layout_width="380dp"
+            android:layout_height="120dp"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tahunKet"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:text="Tahun"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_marginStart="33dp"
+                    android:layout_marginTop="22dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvTahun"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="tahunket"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_marginTop="22dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tahunKet"/>
+
+                <TextView
+                    android:id="@+id/tahunVal"
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:text="Nom"
+                    android:textColor="@color/white"
+                    android:textSize="45sp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="-5dp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTahun"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/myimageView"
+                    android:layout_width="270dp"
+                    android:layout_height="270dp"
+                    android:layout_marginStart="-50dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tahunVal"
+                    app:layout_constraintStart_toEndOf="@+id/tvTahun"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.328" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
