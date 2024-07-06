@@ -2,7 +2,8 @@ package com.example.dashboardkeuangan.ui.notifications
 
 data class FinancialReport(
     val tanggal: String,
-    val category: String,
+    val sumber: String,
     val jenis: String,
-    val nominal: String
+    val formattedNominal: String,
+    val nominal: Double
 )
