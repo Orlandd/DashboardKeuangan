@@ -1,19 +1,12 @@
 package com.example.dashboardkeuangan.ui.home
 
-// RiwayatPemasukanAdapter.java
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboardkeuangan.databinding.ItempemasukanBinding
 
-
-class RiwayatPemasukanAdapter(pemasukanList: List<Pemasukan>) :
+class RiwayatPemasukanAdapter(private val pemasukanList: List<Pemasukan>) :
     RecyclerView.Adapter<RiwayatPemasukanAdapter.ViewHolder>() {
-    private val pemasukanList: List<Pemasukan>
-
-    init {
-        this.pemasukanList = pemasukanList
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItempemasukanBinding =
@@ -23,21 +16,14 @@ class RiwayatPemasukanAdapter(pemasukanList: List<Pemasukan>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pemasukan: Pemasukan = pemasukanList[position]
-        holder.binding.tanggal.setText(pemasukan.tanggal)
-        holder.binding.jenisPemasukan.setText(pemasukan.jenisPemasukan)
-        holder.binding.nominal.setText(pemasukan.nominal)
+        holder.binding.tanggal.text = pemasukan.tanggal
+        holder.binding.jenisPemasukan.text = pemasukan.jenisPemasukan
+        holder.binding.nominal.text = pemasukan.nominal
     }
 
     override fun getItemCount(): Int {
         return pemasukanList.size
     }
 
-    class ViewHolder(binding: ItempemasukanBinding) : RecyclerView.ViewHolder(binding.getRoot()) {
-        var binding: ItempemasukanBinding
-
-        init {
-            this.binding = binding
-        }
-    }
+    class ViewHolder(val binding: ItempemasukanBinding) : RecyclerView.ViewHolder(binding.root)
 }
-

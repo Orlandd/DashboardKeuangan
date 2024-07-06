@@ -7,6 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dashboardkeuangan.databinding.FragmentHomeBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -17,6 +22,12 @@ class HomeFragment : Fragment() {
 
     private val pengeluaranList: MutableList<Pengeluaran> = ArrayList()
     private val pemasukanList: MutableList<Pemasukan> = ArrayList()
+
+    private lateinit var db: FirebaseFirestore
+
+    private var totalPemasukan: Double = 0.0
+    private var totalPengeluaran: Double = 0.0
+    private var totalSaldo: Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +41,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerViews()
-        setupSampleData()
+        db = FirebaseFirestore.getInstance()
+        fetchPemasukanData()
+        fetchPengeluaranData()
     }
 
     private fun setupRecyclerViews() {
@@ -45,14 +58,76 @@ class HomeFragment : Fragment() {
         binding.recyclerViewRiwayatPemasukan.adapter = pemasukanAdapter
     }
 
-    private fun setupSampleData() {
-        // Menambahkan contoh data untuk pengeluaran
-        pengeluaranList.clear()
-        pengeluaranList.add(Pengeluaran("01/01/2024", "Pembelian Buku", "150,000"))
-        // Menambahkan contoh data untuk pemasukan
-        pemasukanList.clear()
-        pemasukanList.add(Pemasukan("01/01/2024", "Gaji", "5,000,000"))
-        pemasukanList.add(Pemasukan("01/01/2024", "Gaji", "5,000,000"))
+    private fun fetchPemasukanData() {
+        db.collection("keuangan").document("pemasukan").collection("data")
+            .get()
+            .addOnSuccessListener { result ->
+                pemasukanList.clear()
+                totalPemasukan = 0.0
+                for (document in result) {
+                    val timestamp = document.getTimestamp("tanggal")
+                    val date = timestamp?.toDate()
+                    val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+
+                    val nominal = document.getString("nominal")?.toDoubleOrNull() ?: 0.0
+                    totalPemasukan += nominal
+
+                    pemasukanList.add(
+                        Pemasukan(
+                            formattedDate,
+                            document.getString("jenis") ?: "",
+                            formatRupiah(nominal)
+                        )
+                    )
+                }
+                updateSaldoPemasukanPengeluaran()
+                pemasukanAdapter?.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                // Handle failure
+            }
+    }
+
+    private fun fetchPengeluaranData() {
+        db.collection("keuangan").document("pengeluaran").collection("data")
+            .get()
+            .addOnSuccessListener { result ->
+                pengeluaranList.clear()
+                totalPengeluaran = 0.0
+                for (document in result) {
+                    val timestamp = document.getTimestamp("tanggal")
+                    val date = timestamp?.toDate()
+                    val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+
+                    val nominal = document.getString("nominal")?.toDoubleOrNull() ?: 0.0
+                    totalPengeluaran += nominal
+
+                    pengeluaranList.add(
+                        Pengeluaran(
+                            formattedDate,
+                            document.getString("jenis") ?: "",
+                            formatRupiah(nominal)
+                        )
+                    )
+                }
+                updateSaldoPemasukanPengeluaran()
+                pengeluaranAdapter?.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                // Handle failure
+            }
+    }
+
+    private fun updateSaldoPemasukanPengeluaran() {
+        totalSaldo = totalPemasukan - totalPengeluaran
+        binding.saldo.text = "Saldo\n" + formatRupiah(totalSaldo)
+        binding.pemasukan.text = "Pemasukan\n" + formatRupiah(totalPemasukan)
+        binding.pengeluaran.text = "Pengeluaran\n" + formatRupiah(totalPengeluaran)
+    }
+
+    private fun formatRupiah(nominal: Double): String {
+        val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        return formatter.format(nominal).replace("Rp", "Rp ")
     }
 
     override fun onDestroyView() {

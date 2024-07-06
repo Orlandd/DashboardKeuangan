@@ -1,19 +1,12 @@
 package com.example.dashboardkeuangan.ui.home
 
-// RiwayatPengeluaranAdapter.java
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboardkeuangan.databinding.ItempengeluaranBinding
 
-
-class RiwayatPengeluaranAdapter(pengeluaranList: List<Pengeluaran>) :
+class RiwayatPengeluaranAdapter(private val pengeluaranList: List<Pengeluaran>) :
     RecyclerView.Adapter<RiwayatPengeluaranAdapter.ViewHolder>() {
-    private val pengeluaranList: List<Pengeluaran>
-
-    init {
-        this.pengeluaranList = pengeluaranList
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItempengeluaranBinding =
@@ -23,21 +16,14 @@ class RiwayatPengeluaranAdapter(pengeluaranList: List<Pengeluaran>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pengeluaran: Pengeluaran = pengeluaranList[position]
-        holder.binding.tanggal.setText(pengeluaran.tanggal)
-        holder.binding.jenisPengeluaran.setText(pengeluaran.jenisPengeluaran)
-        holder.binding.nominal.setText(pengeluaran.nominal)
+        holder.binding.tanggal.text = pengeluaran.tanggal
+        holder.binding.jenisPengeluaran.text = pengeluaran.jenisPengeluaran
+        holder.binding.nominal.text = pengeluaran.nominal
     }
 
     override fun getItemCount(): Int {
         return pengeluaranList.size
     }
 
-    class ViewHolder(binding: ItempengeluaranBinding) : RecyclerView.ViewHolder(binding.getRoot()) {
-        var binding: ItempengeluaranBinding
-
-        init {
-            this.binding = binding
-        }
-    }
+    class ViewHolder(val binding: ItempengeluaranBinding) : RecyclerView.ViewHolder(binding.root)
 }
-
