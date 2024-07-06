@@ -65,12 +65,10 @@ class KerjasamaFragment : Fragment() {
                     }
                 }
 
-                // Convert grouped data to list
                 for ((year, totalAmountPerYear) in groupedData) {
                     list.add(Data(year, totalAmountPerYear.toString()))
                 }
 
-                // Update the TextViews with the overall totals
                 tvTahunValue.text = totalAmount.toString()
                 tvIsiKerjasama.text = totalEntries.toString()
 

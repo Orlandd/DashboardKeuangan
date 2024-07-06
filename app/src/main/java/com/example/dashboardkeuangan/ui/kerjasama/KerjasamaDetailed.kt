@@ -27,7 +27,6 @@ class KerjasamaDetailed : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
 
-        // Get the selected year from the intent
         val product = intent.getParcelableExtra<Data>("DATA")
         if (product != null) {
             val textTahun: TextView = findViewById(R.id.tvTahun)
@@ -59,7 +58,6 @@ class KerjasamaDetailed : AppCompatActivity() {
     }
 
     private fun showRecyclerList() {
-        // Filter the list based on the selected year
         val filteredList = list.filter { dataDetailed ->
             dataDetailed.tanggal?.toDate()?.let { date ->
                 val sdf = SimpleDateFormat("yyyy", Locale.getDefault())

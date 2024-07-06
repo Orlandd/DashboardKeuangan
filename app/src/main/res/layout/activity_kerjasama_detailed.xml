@@ -78,7 +78,6 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-    <!-- CardView for displaying the list -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardList"
         android:layout_width="367dp"

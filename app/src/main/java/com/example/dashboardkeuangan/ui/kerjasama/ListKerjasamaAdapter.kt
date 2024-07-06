@@ -32,9 +32,9 @@ class ListKerjasamaAdapter(private val listProduct: ArrayList<Data>) : RecyclerV
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val (tahun, jumlahpertahun) = listProduct[position]
-        holder.tvTahunLabel.text = "Tahun" // Adjust if needed
+        holder.tvTahunLabel.text = "Tahun"
         holder.tvTahunValue.text = jumlahpertahun
-        holder.tvTahun.text = tahun// or jumlahpertahun if that's the right data
+        holder.tvTahun.text = tahun
         holder.cardTahun.setOnClickListener {
             onItemClickCallback?.onItemClicked(listProduct[holder.adapterPosition])
         }
