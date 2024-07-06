@@ -35,7 +35,7 @@ class FinancialReportAdapter(private var reportList: List<FinancialReport>) :
 
         fun bind(item: FinancialReport) {
             tvTanggal.text = item.tanggal
-            tvCategory.text = item.category
+            tvCategory.text = item.sumber
             tvJenis.text = item.jenis
             tvNominal.text = "${item.nominal}"
         }

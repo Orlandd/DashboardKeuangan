@@ -6,9 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/header_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/color5"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laporan"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                />
+
+        </LinearLayout>
 
         <!-- Header and Balance Section -->
         <FrameLayout
@@ -16,7 +38,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_margin="8dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginHorizontal="8dp"
+            android:paddingBottom="10dp"
             android:elevation="4dp"
             android:background="@drawable/boorder2">
 
@@ -35,22 +59,6 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:id="@+id/tvMonth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:text="Bulan"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="3dp"
-                        android:layout_height="20dp"
-                        android:background="#000"
-                        android:layout_marginTop="-2dp"
-                        android:layout_marginStart="8dp"/>
-
-                    <TextView
                         android:id="@+id/tvYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -59,6 +67,15 @@
                         android:text="Tahun"
                         android:textColor="@android:color/holo_blue_dark"
                         android:textStyle="bold" />
+
+
+                    <Spinner
+                        android:id="@+id/yearSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:padding="5dp"
+                        android:layout_marginStart="16dp"/>
                 </LinearLayout>
 
                 <!-- Balance Section -->
@@ -200,7 +217,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Nominal"
+                        android:text="Nominal (Rp.Juta)"
                         android:textStyle="bold"
                         android:textColor="@android:color/black" />
                 </LinearLayout>
@@ -284,7 +301,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Nominal"
+                        android:text="Nominal (Rp.Juta)"
                         android:textStyle="bold"
                         android:textColor="@android:color/black" />
                 </LinearLayout>
