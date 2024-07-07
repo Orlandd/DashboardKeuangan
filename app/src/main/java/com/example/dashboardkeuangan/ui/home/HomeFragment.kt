@@ -1,6 +1,7 @@
 package com.example.dashboardkeuangan.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.log
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -62,12 +64,15 @@ class HomeFragment : Fragment() {
         db.collection("keuangan").document("pemasukan").collection("data")
             .get()
             .addOnSuccessListener { result ->
+                Log.d("fetchPemasukanData", "Pemasukan data fetched successfully")
                 pemasukanList.clear()
                 totalPemasukan = 0.0
                 for (document in result) {
                     val timestamp = document.getTimestamp("tanggal")
                     val date = timestamp?.toDate()
-                    val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+                    val formattedDate = date?.let {
+                        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
+                    } ?: "Unknown Date"
 
                     val nominal = document.getString("nominal")?.toDoubleOrNull() ?: 0.0
                     totalPemasukan += nominal
@@ -75,16 +80,53 @@ class HomeFragment : Fragment() {
                     pemasukanList.add(
                         Pemasukan(
                             formattedDate,
-                            document.getString("jenis") ?: "",
+                            document.getString("jenis") ?: "Unknown",
                             formatRupiah(nominal)
                         )
                     )
+
+//                    Log.d("fetchPemasukanData", "Added pemasukan: $formattedDate, $nominal")
                 }
-                updateSaldoPemasukanPengeluaran()
-                pemasukanAdapter?.notifyDataSetChanged()
+
+//                Log.d("fetchPemasukanData", "Total Pemasukan: $totalPemasukan")
+
+                // Fetch data from "kerjasama" collection
+                db.collection("keuangan").document("kerjasama").collection("data")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        for (document in result) {
+                            val timestamp = document.getTimestamp("tanggal")
+                            val date = timestamp?.toDate()
+                            val formattedDate = date?.let {
+                                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
+                            } ?: "Unknown Date"
+
+                            val nominal = document.getString("nominal")?.toDoubleOrNull() ?: 0.0
+                            totalPemasukan += nominal
+
+                            pemasukanList.add(
+                                Pemasukan(
+                                    formattedDate, "Kerja Sama",
+                                    formatRupiah(nominal)
+                                )
+                            )
+
+//                            Log.d("fetchPemasukanData", "Added kerjasama: $formattedDate, $nominal")
+                        }
+
+//                        Log.d("fetchPemasukanData", "Total Pemasukan after Kerja Sama: $totalPemasukan")
+
+                        updateSaldoPemasukanPengeluaran()
+                        pemasukanAdapter?.notifyDataSetChanged()
+                    }
+                    .addOnFailureListener { exception ->
+                        // Handle failure for "kerjasama" collection
+                        Log.e("Firestore", "Error getting documents: ", exception)
+                    }
             }
             .addOnFailureListener { exception ->
-                // Handle failure
+                // Handle failure for "pemasukan" collection
+                Log.e("Firestore", "Error getting documents: ", exception)
             }
     }
 
@@ -92,6 +134,7 @@ class HomeFragment : Fragment() {
         db.collection("keuangan").document("pengeluaran").collection("data")
             .get()
             .addOnSuccessListener { result ->
+                Log.d("fetchPengeluaranData", "Pengeluaran data fetched successfully")
                 pengeluaranList.clear()
                 totalPengeluaran = 0.0
                 for (document in result) {
@@ -109,21 +152,58 @@ class HomeFragment : Fragment() {
                             formatRupiah(nominal)
                         )
                     )
+
+//                    Log.d("fetchPengeluaranData", "Added pengeluaran: $formattedDate, $nominal")
                 }
-                updateSaldoPemasukanPengeluaran()
-                pengeluaranAdapter?.notifyDataSetChanged()
+
+//                Log.d("fetchPengeluaranData", "Total Pengeluaran: $totalPengeluaran")
+
+                db.collection("keuangan").document("penelitian").collection("data")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        for (document in result) {
+                            val timestamp = document.getTimestamp("tanggal")
+                            val date = timestamp?.toDate()
+                            val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+
+                            val nominal = document.getString("nominal")?.toDoubleOrNull() ?: 0.0
+                            totalPengeluaran += nominal
+
+                            pengeluaranList.add(
+                                Pengeluaran(
+                                    formattedDate,
+                                    document.getString("kegiatan") ?: "",
+                                    formatRupiah(nominal)
+                                )
+                            )
+
+//                            Log.d("fetchPengeluaranData", "Added penelitian: $formattedDate, $nominal")
+                        }
+
+//                        Log.d("fetchPengeluaranData", "Total Pengeluaran after Penelitian: $totalPengeluaran")
+
+                        updateSaldoPemasukanPengeluaran()
+                        pengeluaranAdapter?.notifyDataSetChanged()
+                    }
+                    .addOnFailureListener { exception ->
+                        // Handle failure
+                        Log.e("Firestore", "Error getting documents: ", exception)
+                    }
             }
             .addOnFailureListener { exception ->
                 // Handle failure
+                Log.e("Firestore", "Error getting documents: ", exception)
             }
     }
 
     private fun updateSaldoPemasukanPengeluaran() {
         totalSaldo = totalPemasukan - totalPengeluaran
+        Log.d("UpdateSaldo", "Total Pemasukan: $totalPemasukan, Total Pengeluaran: $totalPengeluaran, Total Saldo: $totalSaldo")
         binding.saldo.text = "Saldo\n" + formatRupiah(totalSaldo)
         binding.pemasukan.text = "Pemasukan\n" + formatRupiah(totalPemasukan)
         binding.pengeluaran.text = "Pengeluaran\n" + formatRupiah(totalPengeluaran)
     }
+
 
     private fun formatRupiah(nominal: Double): String {
         val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
